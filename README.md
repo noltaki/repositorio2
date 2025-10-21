@@ -1,1 +1,1 @@
-# pagina2
+# este archivo es el readme de rama2
