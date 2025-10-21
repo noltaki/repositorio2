@@ -1,0 +1,38 @@
+<html>
+<head><title>Uploader con Ajax</title></head>
+<body> <!-- el name es usado por php -->
+    <h3>Subir Archivos</h3> <!-- se crea un elemento input de tipo file para subir archivos -->  
+    <input type="file" id="id-input" name="files[]" multiple>
+</body>
+<script>
+const $input = document.getElementById("id-input");
+const uploader = (file) =>{
+    //crea un formdata para almacenar archivos y un xhr
+    //para subir archivos por post usando un codigo de php
+    //que usa los archivos de formdata con $_FILES
+    const formData = new FormData();
+    const xhr = new XMLHttpRequest();
+    formData.append("file", file);
+    xhr.open("POST","uploader.php");
+    xhr.setRequestHeader("enc-type","multipart/from-data");
+    xhr.send(formData);
+    //este evento espera que cambie el responseText y cuando eso
+    //ocurre lo imprime. En este caso vendrá del php
+    xhr.addEventListener("readystatechange", e => {
+        console.log(xhr.responseText);
+    });
+}/* el evento change es del input tipo file */
+//al detectar un cambio el metodo files guarda los archivos en fliestosave
+document.addEventListener("change", e =>{
+    //este evento espera a que pinchemos el boton para subir archivos
+    //crea un arreglo con esos archivos pinchados 
+    //y llama a la función uploader para subirlos todos
+    //a la carpeta e imprime el arreglo en consola
+    if(e.target === $input){ 
+        const filesToSave = Array.from(e.target.files);
+        filesToSave.forEach(el => uploader(el));
+        console.log("arreglo de selecciones: ", filesToSave);
+    }}); 
+</script>
+</html>
+ 

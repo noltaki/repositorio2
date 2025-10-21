@@ -1,0 +1,66 @@
+http://localhost/upload2/uploader.html
+
+
+1. Creación de FormData
+const formData = new FormData();
+
+
+FormData es un objeto que permite crear fácilmente un conjunto de pares clave/valor que representan campos de formulario y sus valores.
+
+En este caso, se usará para enviar un archivo al servidor.
+
+2. Creación de XMLHttpRequest
+const xhr = new XMLHttpRequest();
+
+
+XMLHttpRequest es el objeto que se usa para hacer solicitudes HTTP al servidor desde JavaScript.
+
+Aquí se va a usar para enviar datos con el método POST.
+
+3. Función uploader(file)
+const uploader = (file) => {
+
+
+Esta función recibe como parámetro un archivo (file) y lo enviará al servidor.
+
+4. Añadir el archivo al FormData
+formData.append("file", file);
+
+
+Se agrega el archivo al objeto FormData con la clave "file".
+
+Esto es equivalente a tener un <input type="file" name="file"> en un formulario.
+
+5. Escuchar cambios de estado en la solicitud
+xhr.addEventListener("readystatechange", e => {  
+    console.log("responseText: " + xhr.responseText)
+});
+
+
+El evento "readystatechange" se dispara cada vez que el estado de la solicitud (xhr.readyState) cambia.
+
+xhr.responseText contiene la respuesta que envía el servidor.
+
+En este caso, se imprime siempre, sin comprobar si la solicitud terminó correctamente (lo correcto sería verificar xhr.readyState === 4 y xhr.status === 200).
+
+6. Configurar y abrir la conexión
+xhr.open("POST", "uploader.php");
+
+
+Se abre una conexión POST hacia el archivo uploader.php en el servidor, que será el encargado de procesar la subida.
+
+7. Establecer cabecera HTTP
+xhr.setRequestHeader("enc-type", "multipart/from-data");
+
+
+Aquí hay un error:
+
+La cabecera correcta es "enctype" o "Content-Type", y debería ser "multipart/form-data".
+
+Además, cuando se usa FormData, no es necesario establecer manualmente "Content-Type", ya que el navegador la gestiona automáticamente junto con el límite (boundary).
+
+8. Enviar los datos
+xhr.send(formData);
+
+
+Envía el FormData (con el archivo incluido) al servidor.
